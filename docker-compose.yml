@@ -1,0 +1,41 @@
+services:
+  nexus:
+    image: sonatype/nexus3:latest
+    platform: linux/amd64
+    ports:
+      - "8081:8081"
+    volumes:
+      - nexus-data:/nexus-data
+
+  nacos:
+    image: nacos/nacos-server:v2.3.1
+    platform: linux/amd64
+    environment:
+      MODE: standalone
+      NACOS_AUTH_ENABLE: "false"
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+
+  rocketmq-namesrv:
+    image: apache/rocketmq:5.3.2
+    platform: linux/amd64
+    command: sh mqnamesrv
+    ports:
+      - "9876:9876"
+
+  rocketmq-broker:
+    image: apache/rocketmq:5.3.2
+    platform: linux/amd64
+    container_name: rocketmq-broker
+    depends_on:
+      - rocketmq-namesrv
+    ports:
+      - "10911:10911"
+      - "10909:10909"
+    volumes:
+      - ./rocketmq/broker.conf:/home/rocketmq/broker.conf
+    command: sh mqbroker -n rocketmq-namesrv:9876 -c /home/rocketmq/broker.conf
+
+volumes:
+  nexus-data:

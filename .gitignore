@@ -1,0 +1,25 @@
+# === Java & Build Tools ===
+**/target/
+**/build/
+**/*.jar
+**/*.war
+**/*.ear
+
+# === IDE (IntelliJ, VS Code, Eclipse) ===
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+.factorypath
+
+# === Operating System ===
+.DS_Store
+Thumbs.db
+
+# === Docker & Temp ===
+.docker/
+*.log

@@ -1,0 +1,31 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: notification-service
+
+  config:
+    import: optional:nacos:notification-service.yml
+
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yml
+
+    function:
+      definition: orderCreated
+
+    stream:
+      rocketmq:
+        binder:
+          name-server: localhost:9876
+      bindings:
+        orderCreated-in-0:
+          destination: order-created-topic
+          group: notification-service-group
+          content-type: application/json
